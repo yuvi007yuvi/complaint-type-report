@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Complaint Report Generator</title>
+    <link rel="icon" href="/static/logo.png" type="image/png">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            background-color: #eef2f7;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        }
+        h1 {
+            color: #1a2b4c;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            font-weight: 600;
+            border-bottom: 2px solid #e0e6ed;
+            padding-bottom: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 img {
+            height: 50px; /* Adjust as needed */
+            margin-right: 10px;
+        }
+        h2 {
+            color: #2c3e50;
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 1.8em;
+            border-left: 5px solid #4a90e2;
+            padding-left: 10px;
+            text-align: center;
+        }
+        h3 {
+            color: #34495e;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            font-size: 1.4em;
+            border-bottom: 1px dashed #dcdcdc;
+            padding-bottom: 5px;
+            text-align: center;
+        }
+        form {
+            margin-bottom: 30px;
+            padding: 25px;
+            border: 1px solid #cce0ff;
+            border-radius: 8px;
+            background-color: #e6f2ff;
+            display: flex;
+            gap: 15px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+        form div {
+            flex: 1;
+            min-width: 200px;
+        }
+        form label {
+            font-weight: 600;
+            margin-bottom: 8px;
+            display: block;
+            color: #1a2b4c;
+        }
+        form select,
+        form button {
+            width: 100%;
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #a8c9ed;
+            font-size: 1em;
+            box-sizing: border-box;
+            background-color: #fdfdff;
+            color: #333;
+        }
+        form button {
+            background-color: #4a90e2;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+            flex: none;
+            width: auto;
+            padding: 10px 25px;
+        }
+        form button:hover {
+            background-color: #357ABD;
+            transform: translateY(-2px);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        th,
+        td {
+            border: 1px solid #e0e6ed;
+            padding: 12px 15px;
+            text-align: left;
+        }
+        th {
+            background-color: #4a90e2;
+            color: white;
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.9em;
+        }
+        tr:nth-child(even) {
+            background-color: #f7f9fc;
+        }
+        tr:hover {
+            background-color: #eef2f7;
+            transition: background-color 0.2s ease;
+        }
+        .no-complaints {
+            text-align: center;
+            color: #666;
+            margin-top: 40px;
+            font-size: 1.2em;
+            padding: 20px;
+            background-color: #fff3cd;
+            border: 1px solid #ffeeba;
+            border-radius: 8px;
+        }
+        .print-button {
+            display: block;
+            width: 200px;
+            margin: 30px auto;
+            padding: 12px 25px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 1.1em;
+            text-align: center;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            font-weight: 600;
+        }
+        .print-button:hover {
+            background-color: #218838;
+            transform: translateY(-2px);
+        }
+        .card-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background-color: #ffffff;
+            border: 1px solid #e0e6ed;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            padding: 20px;
+            text-align: center;
+            min-width: 220px;
+            flex: 1;
+            max-width: 30%;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+        }
+        .card h3 {
+            color: #4a90e2;
+            margin-top: 0;
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+        .card p {
+            color: #555;
+            font-size: 1.1em;
+            margin: 0;
+        }
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            .container, .container * {
+                visibility: visible;
+            }
+            .container {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                box-shadow: none;
+                border-radius: 0;
+                margin: 0;
+                padding: 0;
+            }
+            form, .print-button, .card-container {
+                display: none;
+            }
+            h1, h2, h3 {
+                color: #000 !important;
+                border-color: #ccc !important;
+            }
+            table, th, td {
+                border-color: #999 !important;
+            }
+            th {
+                background-color: #eee !important;
+                color: #000 !important;
+            }
+            tr:nth-child(even) {
+                background-color: #f0f0f0 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1><img src="/static/logo.png" alt="Logo">Complaint Report Generator</h1>
+
+        <div class="upload-container">
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <label for="csvFile">Upload CSV File:</label>
+                <input type="file" name="file" id="csvFile" accept=".csv">
+                <input type="submit" value="Upload">
+            </form>
+        </div>
+
+        <form method="POST" class="filters">
+            <div>
+                <label for="complaint_type">Complaint Type:</label>
+                <select name="complaint_type" id="complaint_type">
+                    <option value="">All</option>
+                    {% for type in complaint_types %}
+                        <option value="{{ type }}" {% if type == selected_type %}selected{% endif %}>{{ type }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div>
+                <label for="complaint_subtype">Complaint Subtype:</label>
+                <select name="complaint_subtype" id="complaint_subtype">
+                    <option value="">All</option>
+                    {% for subtype in complaint_subtypes %}
+                        <option value="{{ subtype }}" class="{{ subtype|lower|replace(' ', '-') }}-subtype" {% if subtype == selected_subtype %}selected{% endif %}>{{ subtype }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit">Apply Filters</button>
+            <button type="button" onclick="window.print()">Print to PDF</button>
+        </form>
+
+        <div class="card-container">
+            {% for type, count in complaint_counts.items() %}
+            <div class="card">
+                <h3>{{ type }}</h3>
+                <p>Total Complaints: {{ count }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% if grouped_complaints %}
+            {% for complaint_type, subtypes in grouped_complaints.items() %}
+                <h2>Complaint Type: {{ complaint_type }}</h2>
+                {% for complaint_subtype, complaints in subtypes.items() %}
+                    <h3>Complaint Subtype: {{ complaint_subtype }}</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Sr No</th>
+                                <th>Complaint ID</th>
+                                <th>Name</th>
+                                <th>Phone Number</th>
+                                <th>Zone</th>
+                                <th>Ward</th>
+                                <th>Registered Date</th>
+                                <th>Status</th>
+                                <th>Complaint Detail</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for complaint in complaints %}
+                            <tr>
+                                <td>{{ complaint['Sr No'] }}</td>
+                                <td>{{ complaint['compId'] }}</td>
+                                <td>{{ complaint['Name'] }}</td>
+                                <td>{{ complaint['Phone Number'] }}</td>
+                                <td>{{ complaint['Zone'] }}</td>
+                                <td>{{ complaint['Ward'] }}</td>
+                                <td>{{ complaint['Complaint Registered Date'] }}</td>
+                                <td>{{ complaint['Status'] }}</td>
+                                <td>{{ complaint['Complaint Detail'] }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% endfor %}
+            {% endfor %}
+        {% else %}
+        <p class="no-complaints">No complaints found matching the selected filters.</p>
+        {% endif %}
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const complaintTypeSelect = document.getElementById('complaint_type');
+            const complaintSubtypeSelect = document.getElementById('complaint_subtype');
+            const allSubtypeOptions = Array.from(complaintSubtypeSelect.options);
+
+            function updateSubtypes() {
+                const selectedType = complaintTypeSelect.value;
+                
+                // Clear current options except 'All'
+                complaintSubtypeSelect.innerHTML = '';
+                const allOption = allSubtypeOptions.find(option => option.value === '');
+                if (allOption) {
+                    complaintSubtypeSelect.appendChild(allOption.cloneNode(true));
+                }
+
+                if (selectedType) {
+                    // Filter and add relevant subtypes
+                    const relevantSubtypes = allSubtypeOptions.filter(option => 
+                        option.classList.contains(selectedType.toLowerCase().replace(/ /g, '-') + '-subtype')
+                    );
+                    relevantSubtypes.forEach(option => {
+                        complaintSubtypeSelect.appendChild(option.cloneNode(true));
+                    });
+                } else {
+                    // If no complaint type is selected, show all subtypes
+                    allSubtypeOptions.forEach(option => {
+                        if (option.value !== '') {
+                            complaintSubtypeSelect.appendChild(option.cloneNode(true));
+                        }
+                    });
+                }
+                // Re-select the previously selected subtype if it's still available
+                const previouslySelectedSubtype = "{{ selected_subtype }}";
+                if (previouslySelectedSubtype) {
+                    const optionToSelect = Array.from(complaintSubtypeSelect.options).find(option => option.value === previouslySelectedSubtype);
+                    if (optionToSelect) {
+                        optionToSelect.selected = true;
+                    }
+                }
+            }
+
+            complaintTypeSelect.addEventListener('change', updateSubtypes);
+
+            // Initial call to set up subtypes based on initial selection
+            updateSubtypes();
+        });
+    </script>
+</body>
+</html>
